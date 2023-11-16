@@ -1,0 +1,74 @@
+services:
+  moments-app-web:
+    container_name: moments-app-web
+    extends:
+      file: ../PHPApp/compose.yaml
+      service: web
+    networks:
+      - IF3110-2023-02-03
+      - web-mysql
+  moments-app-db:
+    container_name: moments-app-db
+    extends:
+      file: ../PHPApp/compose.yaml
+      service: mysql
+    networks:
+      - IF3110-2023-02-03
+      - web-mysql
+  spaces-app-web:
+    container_name: spaces-app-web
+    extends:
+      file: ../ClientSPA/compose.yaml
+      service: client
+    networks:
+      - IF3110-2023-02-03
+  spaces-rest-service-server:
+    container_name: spaces-rest-service-server
+    extends:
+      file: ../RESTService/compose.yaml
+      service: rest-api
+    networks:
+      - IF3110-2023-02-03
+      - api-postgresql-redis
+  spaces-rest-service-db:
+    container_name: spaces-rest-service-db
+    extends:
+      file: ../RESTService/compose.yaml
+      service: postgresql
+    networks:
+      - IF3110-2023-02-03
+      - api-postgresql-redis
+  spaces-rest-service-cache:
+    container_name: spaces-rest-service-cache
+    extends:
+      file: ../RESTService/compose.yaml
+      service: redis
+    networks:
+      - IF3110-2023-02-03
+      - api-postgresql-redis
+  moments-soap-service-soap:
+    container_name: moments-soap-service-soap
+    extends:
+      file: ../SOAPService/compose.yaml
+      service: java
+    networks:
+      - IF3110-2023-02-03
+      - custom-network
+  moments-soap-service-db:
+    container_name: moments-soap-service-db
+    extends:
+      file: ../SOAPService/compose.yaml
+      service: db
+    networks:
+      - IF3110-2023-02-03
+      - custom-network
+
+networks:
+  IF3110-2023-02-03:
+    driver: bridge
+  web-mysql:
+    driver: bridge
+  api-postgresql-redis:
+    driver: bridge
+  custom-network:
+    driver: bridge
