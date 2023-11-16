@@ -27,6 +27,9 @@ services:
     extends:
       file: ../RESTService/compose.yaml
       service: rest-api
+    depends_on:
+      - spaces-rest-service-db
+      - spaces-rest-service-cache
     networks:
       - IF3110-2023-02-03
       - api-postgresql-redis
